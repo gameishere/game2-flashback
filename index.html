@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keypad Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('sky.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        section {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            margin-top: 20px;
+        }
+
+        .key {
+            padding: 15px;
+            font-size: 1.5em;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #clear-button {
+            padding: 15px;
+            font-size: 1.5em;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #display-box {
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 1.5em;
+            background-color: #333;
+            color: #fff;
+        }
+
+        #enter-button {
+            padding: 15px;
+            font-size: 1.5em;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #countdown-dec22 {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Keypad Page Header</h1>
+        <div id="countdown-dec22"></div>
+    </header>
+
+    <section>
+        <!-- Display Box for Entered Numbers -->
+        <div id="display-box"></div>
+
+        <!-- Keypad -->
+        <div class="keypad">
+            <button class="key" onclick="pressKey(1)">1</button>
+            <button class="key" onclick="pressKey(2)">2</button>
+            <button class="key" onclick="pressKey(3)">3</button>
+            <button class="key" onclick="pressKey(4)">4</button>
+            <button class="key" onclick="pressKey(5)">5</button>
+            <button class="key" onclick="pressKey(6)">6</button>
+            <button class="key" onclick="pressKey(7)">7</button>
+            <button class="key" onclick="pressKey(8)">8</button>
+            <button class="key" onclick="pressKey(9)">9</button>
+            <button class="key" onclick="pressKey(0)">0</button>
+            <button id="clear-button" onclick="clearKeypad()">Clear</button>
+        </div>
+
+        <!-- Enter Button -->
+        <button id="enter-button" onclick="checkEnteredNumbers()">Enter</button>
+
+        <!-- Countdown Timer for December 22nd -->
+        <div id="countdown-dec22"></div>
+    </section>
+
+    <!-- Beep Sound -->
+    <audio id="beep" src="Beep.mp3"></audio>
+    <!-- Boop Sound -->
+    <audio id="boop" src="Boop.mp3"></audio>
+
+    <script>
+        // Countdown Timer for December 22nd
+        const targetDateDec22 = new Date(new Date().getFullYear(), 11, 22).getTime();
+
+        const countdownIntervalDec22 = setInterval(function () {
+            const now = new Date().getTime();
+            const distance = targetDateDec22 - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown-dec22').innerHTML =
+                `Countdown to December 22nd: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                clearInterval(countdownIntervalDec22);
+                document.getElementById('countdown-dec22').innerHTML = 'EXPIRED';
+            }
+        }, 1000);
+
+        // Function to play the beep sound
+        function playBeepSound() {
+            const beepSound = document.getElementById('beep');
+            beepSound.currentTime = 0; // Reset the sound to the beginning
+            beepSound.play();
+        }
+
+        // Function to play the boop sound
+        function playBoopSound() {
+            const boopSound = document.getElementById('boop');
+            boopSound.currentTime = 0; // Reset the sound to the beginning
+            boopSound.play();
+        }
+
+        // Function to handle key press
+        function pressKey(key) {
+            // Play beep sound
+            playBeepSound();
+
+            // Display the entered numbers in the display box
+            const displayBox = document.getElementById('display-box');
+            displayBox.textContent += key;
+
+            // Handle key press logic (you can customize this part)
+            console.log(`Key pressed: ${key}`);
+        }
+
+        // Function to clear the keypad
+        function clearKeypad() {
+            // Play boop sound
+            playBoopSound();
+
+            // Clear the display box
+            const displayBox = document.getElementById('display-box');
+            displayBox.textContent = '';
+
+            // Clear keypad logic (you can customize this part)
+            console.log('Keypad cleared');
+        }
+
+        // Function to check entered numbers and redirect to the next page if correct
+        function checkEnteredNumbers() {
+            const enteredNumbers = document.getElementById('display-box').textContent;
+
+            // Check if entered numbers match the correct combination
+            if (enteredNumbers === '5987403') {
+                // Redirect to the next page
+                window.location.href = 'https://gameishere.github.io/nextpage.html';
+            } else {
+                alert('Incorrect combination. Try again.');
+            }
+        }
+    </script>
+</body>
+</html>
